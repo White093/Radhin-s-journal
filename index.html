@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SANTUARI V4 - Complete Custom Experience</title>
+    <!-- Import Google Fonts Artistik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Caveat:wght@500;700&family=Special+Elite&family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0a0c10;
+            --bg-card: rgba(22, 27, 38, 0.65);
+            --text-main: #e6edf3;
+            --text-muted: #8b949e;
+            --accent-glow: #a5b4fc;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-handwriting: 'Caveat', cursive;
+            --font-typewriter: 'Special Elite', monospace;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --active-font: var(--font-serif);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: var(--active-font);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(165, 180, 252, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.05) 0%, transparent 40%);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* SIDEBAR ELEGANT */
+        .sidebar {
+            width: 350px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .section-tag {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-glow);
+            margin-bottom: 0.8rem;
+            display: block;
+            opacity: 0.8;
+        }
+
+        .panel-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.2rem;
+            position: relative;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: rgba(239, 68, 68, 0.7);
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+        }
+
+        .remove-btn:hover { color: #ef4444; }
+
+        .editable-title {
+            background: transparent;
+            border: none;
+            border-bottom: 1px dashed var(--border-color);
+            color: var(--accent-glow);
+            font-size: 1.1rem;
+            font-family: inherit;
+            width: 100%;
+            outline: none;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.2rem;
+        }
+
+        .editable-content {
+            font-style: italic;
+            outline: none;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--text-main);
+        }
+
+        /* CONTROL UTAMAKAN FONT & TIPOGRAFI */
+        .font-selector-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .font-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .font-btn:hover {
+            border-color: var(--accent-glow);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* CONTROL AUDIO CUSTOM */
+        .audio-upload-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1rem;
+        }
+
+        .audio-upload-btn {
+            display: block;
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px dashed var(--accent-glow);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--accent-glow);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .audio-upload-btn:hover {
+            background: rgba(165, 180, 252, 0.1);
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 0.8rem;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        /* CONTROL RACIK WARNA AMBIENT */
+        .color-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        .color-picker-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+        }
+
+        .color-picker-item input[type="color"] {
+            border: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            background: none;
+        }
+
+        .btn-action {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(165, 180, 252, 0.1), rgba(192, 132, 252, 0.1));
+            border: 1px solid var(--accent-glow);
+            color: var(--text-main);
+            padding: 0.8rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: inherit;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            background: var(--accent-glow);
+            color: #0a0c10;
+            box-shadow: 0 0 20px rgba(165, 180, 252, 0.4);
+        }
+
+        /* MAIN CONTENT WORKSPACE AREA */
+        .main-workspace {
+            margin-left: 350px;
+            flex: 1;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .workspace-header h1 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 2rem;
+        }
+
+        .module-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.8rem;
+            position: relative;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .module-card:hover {
+            border-color: rgba(165, 180, 252, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .module-card textarea {
+            width: 100%;
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            outline: none;
+            resize: none;
+            margin-top: 1rem;
+        }
+
+        .module-card textarea::placeholder {
+            color: var(--text-muted);
+            opacity: 0.5;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR CONTROL UTAMA -->
+    <aside class="sidebar">
+        <!-- MOTIVASI BISA DIHAPUS & UBAH ISI -->
+        <div class="panel-box" id="motivationPanel">
+            <button class="remove-btn" onclick="removeElement('motivationPanel')">✕ Hapus</button>
+            <span class="section-tag">BISIK SUNYI</span>
+            <input type="text" class="editable-title" value="✨ Papan Inspirasi">
+            <div class="editable-content" contenteditable="true">
+                "Intuisi bukan sekadar pemikiran, ia adalah jendela tempat jiwa memandang masa depan."
+            </div>
+        </div>
+
+        <!-- CONTROL AUDIO ATMOSPHERE CUSTOM -->
+        <div id="audioSection">
+            <span class="section-tag">AUDIO & ALUNAN SUASANA</span>
+            <div class="audio-upload-container">
+                <label class="audio-upload-btn">
+                    🎵 Unggah File Audio/Musik
+                    <input type="file" id="audioUploader" accept="audio/*" style="display: none;" onchange="handleAudioUpload(event)">
+                </label>
+                <span id="audioFileName" style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.5rem; text-align: center;">Belum ada audio khusus</span>
+                <audio id="customAudioPlayer" controls style="display: none;"></audio>
+            </div>
+        </div>
+
+        <!-- CONTROL KUSTUMISASI TIPOGRAFI / FONT SELEKTOR -->
+        <div>
+            <span class="section-tag">GAYA TIPOGRAFI & FONT</span>
+            <div class="font-selector-group">
+                <button class="font-btn" onclick="changeFont('var(--font-serif)')" style="font-family: 'Cormorant Garamond', serif;">
+                    <span>Classical Serif</span>
+                    <small style="opacity: 0.6;">Cormorant</small>
+                </button>
+                <button class="font-btn" onclick="changeFont('var(--font-handwriting)')" style="font-family: 'Caveat', cursive; font-size: 1.2rem;">
+                    <span>Handwriting Poetic</span>
+                    <small style="opacity: 0.6;">Caveat</small>
+                </button>
+                <button class="font-btn" onclick="changeFont('var(--font-typewriter)')" style="font-family: 'Special Elite', monospace; font-size: 0.9rem;">
+                    <span>Typewriter Vintage</span>
+                    <small style="opacity: 0.6;">Special Elite</small>
+                </button>
+                <button class="font-btn" onclick="changeFont('var(--font-sans)')" style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.85rem;">
+                    <span>Modern Minimalist</span>
+                    <small style="opacity: 0.6;">Jakarta Sans</small>
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTROL RACIK WARNA AMBIENT -->
+        <div>
+            <span class="section-tag">RACIK PALET SUASANA</span>
+            <div class="color-picker-grid">
+                <div class="color-picker-item">
+                    <span>Latar</span>
+                    <input type="color" value="#0a0c10" onchange="updateColor('--bg-primary', this.value)">
+                </div>
+                <div class="color-picker-item">
+                    <span>Kartu</span>
+                    <input type="color" value="#161b26" onchange="updateColor('--bg-card', this.value)">
+                </div>
+                <div class="color-picker-item">
+                    <span>Aksen</span>
+                    <input type="color" value="#a5b4fc" onchange="updateColor('--accent-glow', this.value)">
+                </div>
+                <div class="color-picker-item">
+                    <span>Teks</span>
+                    <input type="color" value="#e6edf3" onchange="updateColor('--text-main', this.value)">
+                </div>
+            </div>
+        </div>
+
+        <!-- KONTROL UTAMAKAN RAKIT KANVAS -->
+        <div>
+            <span class="section-tag">RAKIT STRUKTUR RUANG</span>
+            <button class="btn-action" onclick="addCustomModule()">+ Tambah Kanvas Baru</button>
+        </div>
+    </aside>
+
+    <!-- AREA WORKSPACE MODULAR UTAMA -->
+    <main class="main-workspace">
+        <div class="workspace-header">
+            <div>
+                <span class="section-tag">SANTUARI INTUITIF</span>
+                <h1 contenteditable="true" style="outline: none;">Kanvas Jiwa & Perenungan</h1>
+            </div>
+        </div>
+
+        <div class="modules-grid" id="workspaceGrid">
+            <!-- MODUL MY JOURNAL -->
+            <div class="module-card" id="journalModule">
+                <button class="remove-btn" onclick="removeElement('journalModule')">✕ Hapus</button>
+                <input type="text" class="editable-title" value="📖 MY JOURNAL & PUISI">
+                <textarea placeholder="Tuliskan kilatan intuisi, puisi bebas, atau bisikan hatimu di sini..."></textarea>
+            </div>
+
+            <!-- MODUL PAPAN IDE VISUAL -->
+            <div class="module-card" id="ideaModule">
+                <button class="remove-btn" onclick="removeElement('ideaModule')">✕ Hapus</button>
+                <input type="text" class="editable-title" value="💡 PAPAN IDE & ANOMALI">
+                <textarea placeholder="Tempat menampung ide-ide liar, bayangan masa depan, atau mozaik konseptual..."></textarea>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Custom Audio Upload Handler
+        function handleAudioUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const audioPlayer = document.getElementById('customAudioPlayer');
+                const audioLabel = document.getElementById('audioFileName');
+                
+                audioPlayer.src = URL.createObjectURL(file);
+                audioPlayer.style.display = 'block';
+                audioLabel.innerText = '🎵 ' + file.name;
+                audioPlayer.play();
+            }
+        }
+
+        // Switch Gaya Tipografi Font Secara Instan
+        function changeFont(fontVariable) {
+            document.documentElement.style.setProperty('--active-font', fontVariable);
+            document.body.style.fontFamily = fontVariable;
+        }
+
+        // Ubah Warna Variabel CSS Dynamic
+        function updateColor(variable, value) {
+            document.documentElement.style.setProperty(variable, value);
+        }
+
+        // Hapus Elemen Fitur/Modul
+        function removeElement(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.style.opacity = '0';
+                element.style.transform = 'scale(0.9)';
+                setTimeout(() => element.remove(), 200);
+            }
+        }
+
+        // Tambah Kanvas/Modul Baru
+        let canvasCount = 1;
+        function addCustomModule() {
+            canvasCount++;
+            const grid = document.getElementById('workspaceGrid');
+            const newModule = document.createElement('div');
+            newModule.className = 'module-card';
+            const moduleId = 'customModule_' + canvasCount;
+            newModule.id = moduleId;
+
+            newModule.innerHTML = `
+                <button class="remove-btn" onclick="removeElement('${moduleId}')">✕ Hapus</button>
+                <input type="text" class="editable-title" value="✨ KANVAS RUANG #${canvasCount}">
+                <textarea placeholder="Ruang bebas untuk menulis, menggambar kata, atau merenungkan makna..."></textarea>
+            `;
+
+            grid.appendChild(newModule);
+        }
+    </script>
+</body>
+</html>
